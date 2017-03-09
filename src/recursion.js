@@ -195,15 +195,16 @@ var divide = function(x, y) {
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
-    //count down to zero with x 
-    //add zero to the gcd call each time if not higher, otherwise return first divisor found
+    //take the larger of the two numbers
+    //check divisibility of that number with the other number
     if(x < 0 || y < 0) return null;
-    if (x === 0) return 0;
-    if(x % y === 0) {
-        return x;
-    } 
-    return gcd(x - 1, y)
-};;
+    if(x === 0 || y === 0) return 0;
+    if(tracker === 1) return 1;
+    if(x % tracker === 0 && y % tracker === 0) return tracker;
+    var tracker = Array.from(arguments)[2] || x > y ? y : x;
+    
+
+};
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
@@ -211,6 +212,19 @@ var gcd = function(x, y) {
 // compareStr('', '') // true
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+    if(str1 === "" && str2 === "") return true;
+    if(str1 === "" || str2 === "") return false;
+    // if(str1.length !== str2.length) return false;
+    var ind = Array.from(arguments)[2] || 0;
+    if(str1[ind] === str2[ind]){
+        if(ind === str1.length - 1) {
+            if(str1.length === str2.length)
+                return true;
+            return false;    
+        }    
+        return compareStr(str1, str2, ++ind);
+    return false;    
+    }
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
@@ -338,6 +352,25 @@ var alternateSign = function(array) {
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+    var ind = Array.from(arguments)[1] || 0;
+    var newStr = Array.from(arguments)[2] || "";
+
+    var splitter = str.split(" ");
+    if(ind === splitter.length) return newStr.trim();
+
+    var changeMe = splitter[ind];
+
+    if(changeMe === '1') return numToText(str, ++ind, newStr + " one");
+    if(changeMe === '2') return numToText(str, ++ind, newStr + " two");
+    if(changeMe === '3') return numToText(str, ++ind, newStr + " three");
+    if(changeMe === '4') return numToText(str, ++ind, newStr + " four");
+    if(changeMe === '5') return numToText(str, ++ind, newStr + " five");
+    if(changeMe === '6') return numToText(str, ++ind, newStr + " six");
+    if(changeMe === '7') return numToText(str, ++ind, newStr + " seven");
+    if(changeMe === '8') return numToText(str, ++ind, newStr + " eight");
+    if(changeMe === '9') return numToText(str, ++ind, newStr + " nine");
+
+    return numToText(str, ++ind, newStr + " " + changeMe);
 };
 
 // *** EXTRA CREDIT ***
@@ -351,6 +384,7 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
+
 };
 
 // 38. Write a merge sort function.
