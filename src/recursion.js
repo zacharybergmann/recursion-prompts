@@ -198,12 +198,11 @@ var gcd = function(x, y) {
     //take the larger of the two numbers
     //check divisibility of that number with the other number
     if(x < 0 || y < 0) return null;
-    if(x === 0 || y === 0) return 0;
-    if(tracker === 1) return 1;
-    if(x % tracker === 0 && y % tracker === 0) return tracker;
-    var tracker = Array.from(arguments)[2] || x > y ? y : x;
+    if(x === 0 && y === 0) return 0;
+    if(x === 0) return y;
+    if(y === 0) return x;
     
-
+    return gcd(y, x % y);
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
@@ -230,27 +229,46 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str){
+    if(str.length === 0) return [];
+    return [].concat(str.slice(0, 1), createArray(str.slice(1)));
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function (array) {
+    var ind = Array.from(arguments)[1] || array.length;
+    var result = Array.from(arguments)[2] || [];
+    result.push(array[ind - 1]);
+    if(ind === 1) {
+        return result;
+    } 
+    return reverseArr(array, --ind, result);
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+    if(length === 0) return [];
+    return [value].concat(buildList(value, --length));
 };
 
 // 19. Count the occurence of a value inside a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+    var index = Array.from(arguments)[2] || 0;
+    var count = Array.from(arguments)[3] || 0;
+    if(array[index] === value) count++;
+    if(index === array.length - 1) return count;
+    return countOccurrence(array, value, ++index, count);
 };
 
 // 20. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+    var index = Array.from(arguments)[2] || 0;
+    if(index === array.length) return [];
+    return [callback(array[index], index, array)].concat(rMap(array, callback, ++index));
 };
 
 // 21. Write a function that counts the number of times a key occurs in an object.
@@ -286,17 +304,32 @@ var fibonacci = function(n) {
 // nthFibo(7); // 13
 // nthFibo(3); // 2
 var nthFibo = function(n) {
+    if(n < 0) return null;
+    if(n === 0) return 0;
+    var ind = Array.from(arguments)[1] || 1;
+    var prev = Array.from(arguments)[2] || 0;
+    var curr = Array.from(arguments)[3] || 1;
+    if(ind === n) return curr;
+    return nthFibo(n, ++ind, curr, curr + prev);
 };
 
 // 26. Given an array of words, return a new array containing each word capitalized.
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
 var capitalizeWords = function(input) {
+    var index = Array.from(arguments)[1] || 0;
+    if(input.length === 0) return input;
+    if(index === input.length) return [];
+    return [input[index].toUpperCase()].concat(capitalizeWords(input, ++index));
 };
 
 // 27. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car', 'poop', 'banana']); // ['Car', 'Poop', 'Banana']
 var capitalizeFirst = function(array) {
+    var index = Array.from(arguments)[1] || 0;
+    if(array.length === 0) return array;
+    if(index === array.length) return [];
+    return [array[index][0].toUpperCase() + array[index].slice(1)].concat(capitalizeFirst(array, ++index));
 };
 
 // 28. Return the sum of all even numbers in an object containing nested objects.
@@ -314,6 +347,10 @@ var nestedEvenSum = function(obj) {
 // 29. Flatten an array containing nested arrays.
 // Example: flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(arrays) {
+    var flatterArray = Array.from(arguments)[1] || arrays;
+    if(flatterArray.reduce(function(isFlatYet, curArrVal){return isFlatYet === false || Array.isArray(curArrVal) ? false : true;}, true))
+        return flatterArray;
+    return flatten(arrays, flatterArray.reduce(function(bitFlatter, curArrVal){return bitFlatter.concat(curArrVal);}, []));    
 };
 
 // 30. Given a string, return an object containing tallies of each letter.
