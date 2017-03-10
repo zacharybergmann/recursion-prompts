@@ -328,8 +328,28 @@ var countValuesInObj = function(obj, value) {
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, key, newKey) {
-    
-
+    console.log(obj);
+    var carryVals = Array.from(arguments)[3] || [obj];
+    var result = Array.from(arguments)[4] || obj;
+    if(carryVals.some(function(val){return typeof val === 'object'})){
+        var keyss = [];
+        var valss = [];
+        carryVals.forEach(function(objMb){
+            if((typeof objMb === 'object')) {
+                keyss = Object.keys(objMb);
+                keyss.forEach(function(kee){
+                    valss.push(objMb[kee]);
+                });
+                if(objMb.hasOwnProperty(key)) {
+                    result[newKey] = obj[key];
+                    delete result[key];
+                }
+            }
+        });
+        return replaceKeysInObj(obj, key, newKey, valss, result);
+    }
+    console.log(result);
+    return result;    
 };
 
 // 24. Get the first n Fibonacci numbers.  In the Fibonacci Sequence, each subsequent
@@ -524,15 +544,16 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
-    if(array === [target]) return min;
+    debugger;
+    var min = Array.from(arguments)[2] || 0;
+    var max = Array.from(arguments)[3] || array.length - 1;
     if(array.length === 1 && array[0] !== target) return null;
+    if(array.length === 1 && array[0] === target) return min;
     var findMiddle = Math.floor(array.length / 2);
     var arr1stHalf = array.slice(0, findMiddle);
     var arr2ndHalf = array.slice(findMiddle);
-    if(target < arr1stHalf[arr1stHalf.length - 1]) return binarySearch(arr1stHalf, target, 0, findMiddle - 1);
-    if(target === arr1stHalf[arr1stHalf.length - 1]) return findMiddle - 1;
-    if(target > arr2ndHalf[0]) return binarySearch(arr2ndHalf, target, findMiddle, array.length - 1);
-    if(target === arr2ndHalf[0]) return findMiddle;
+    if(target <= arr1stHalf[arr1stHalf.length - 1]) return binarySearch(arr1stHalf, target, min, findMiddle - 1);
+    return binarySearch(arr2ndHalf, target, findMiddle + min, max);
 };
 
 // 38. Write a merge sort function.
