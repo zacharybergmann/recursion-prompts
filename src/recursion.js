@@ -296,6 +296,15 @@ var replaceKeysInObj = function(obj, key, newKey) {
 // fibonacci(5);  // [0, 1, 1, 2, 3, 5]
 // Note:  The 0 is not counted.
 var fibonacci = function(n) {
+    var index = Array.from(arguments)[1] || 1;
+    var prev = Array.from(arguments)[2] || 0;
+    var current = Array.from(arguments)[3] || 1;
+    var result = Array.from(arguments)[4] || [0, 1];
+    if(n === 0) return null;
+    if(n < 0) return null;
+    if(n === result.length - 1) return result;
+    result.push(prev + current);
+    return fibonacci(n, ++index, current, prev + current, result);
 };
 
 // 25. Return the Fibonacci number located at index n of the Fibonacci sequence.
@@ -342,6 +351,7 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
+
 };
 
 // 29. Flatten an array containing nested arrays.
@@ -463,4 +473,5 @@ var binarySearch = function(array, target, min, max) {
 // Sample array:  [34,7,23,32,5,62]
 // Sample output: [5,7,23,32,34,62]
 var mergeSort = function(array) {
+
 };
