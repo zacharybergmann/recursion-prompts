@@ -282,8 +282,24 @@ var rMap = function(array, callback) {
 // var testobj = {'e': {'x':'y'}, 't':{'r': {'e':'r'}, 'p': {'y':'r'}},'y':'e'};
 // countKeysInObj(testobj, 'r') // 1
 // countKeysInObj(testobj, 'e') // 2
-var countKeysInObj = function(obj, key) {
-    
+var countKeysInObj = function(obj, findKey) {
+    var tempVals = Array.from(arguments)[2] || [obj];
+    var tempKeys = Array.from(arguments)[3] || [];
+    if(tempVals.some(function(mbObj){return typeof mbObj === 'object'})) {
+        var newTempVals = [];
+        var newTempKeys = tempKeys;
+        tempVals.forEach(function(objMb){
+            if(typeof objMb === 'object') {
+                var keysThis = Object.keys(objMb);
+                newTempKeys = newTempKeys.concat(keysThis);
+                keysThis.forEach(function(key){
+                    newTempVals.push(objMb[key]);
+                });
+            } 
+        });
+        return countKeysInObj(obj, findKey, newTempVals, newTempKeys);
+    }
+    return tempKeys.reduce(function(sumKeyOccurs, curKey){return curKey === findKey ? ++sumKeyOccurs : sumKeyOccurs;}, 0);
 };
 
 // 22. Write a function that counts the number of times a value occurs in an object.
@@ -291,6 +307,22 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(testobj, 'r') // 2
 // countValuesInObj(testobj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+    var tempVals = Array.from(arguments)[2] || [obj];
+    if(tempVals.some(function(mbObj){return typeof mbObj === 'object'})) {
+        var newTempVals = tempVals.filter(function(tempval){return typeof tempval !== 'object'});  //remove objects
+        var objVals = tempVals.filter(function(tempvall){return typeof tempvall === 'object'});  //get the objects
+        //get the keys for each object in objVals
+        //access the values of each obj in objVals and put it in newTempVals
+        objVals.forEach(function(objie){
+            var keys = Object.keys(objie);
+            keys.forEach(function(key){
+                newTempVals.push(objie[key]);
+            });
+        });
+
+        return countValuesInObj(obj, value, newTempVals);        
+    }
+    return tempVals.reduce(function(sumValOccurs, curVal){return curVal === value ? ++sumValOccurs : sumValOccurs;}, 0);
 };
 
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
