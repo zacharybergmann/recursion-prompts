@@ -82,7 +82,7 @@ var range = function(x, y) {
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
     if(exp === 0) return 1;
-    if(exp < 0) return 1 / base * exponent(base, exp + 1);
+    if(exp < 0) return 1 / base * exponent(base, exp + 1).toLocaleString(undefined, {minimumFractionDigits: 4, maximumFractionDigits: 4});
     return base * exponent(base, exp - 1);
 };
 
@@ -104,11 +104,9 @@ var powerOfTwo = function(n) {
 var reverse = function(string) {
     var index = Array.from(arguments)[1] || 0;
     var result = Array.from(arguments)[2] || string;
-    if(index === string.length) {
-        return result.slice(string.length);
-    }    
+    if(index === string.length) return result.slice(string.length);
+  
     result += string[string.length - 1 - index];
-    console.log(result);
     return reverse(string, ++index, result);
 };
 
