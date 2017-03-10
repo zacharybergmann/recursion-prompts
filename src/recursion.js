@@ -328,6 +328,7 @@ var countValuesInObj = function(obj, value) {
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, key, newKey) {
+    
 
 };
 
@@ -392,7 +393,23 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
-
+    var tempVals = Array.from(arguments)[1] || [obj];
+    if(tempVals.some(function(mbObj){return typeof mbObj === 'object'})) {
+        var newTempVals = tempVals.filter(function(tempval){return typeof tempval !== 'object'});  //remove objects
+        var objVals = tempVals.filter(function(tempvall){return typeof tempvall === 'object'});  //get the objects
+        //get the keys for each object in objVals
+        //access the values of each obj in objVals and put it in newTempVals
+        objVals.forEach(function(objie){
+            var keys = Object.keys(objie);
+            keys.forEach(function(key){
+                newTempVals.push(objie[key]);
+            });
+        });
+        console.log('at return');
+        return nestedEvenSum(obj, newTempVals);        
+    }
+    console.log(tempVals);
+    return tempVals.reduce(function(sumValOccurs, curVal){return curVal % 2 === 0 ? sumValOccurs + curVal : sumValOccurs;}, 0);
 };
 
 // 29. Flatten an array containing nested arrays.
