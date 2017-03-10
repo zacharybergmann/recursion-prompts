@@ -172,21 +172,27 @@ var multiply = function(x, y) {
 var divide = function(x, y) {
     if (y === 0) return NaN;
     if(x === 0) return 0;
-    if(x > 0 && y > 0 || x < 0 && y < 0) {   //positive return value
-        if(x > 0) { //both positive numbers
-            
-        } else { //both negative numbers
-            
+    if(x > 0 && y > 0 || x < 0 && y < 0) {  
+        if(x > 0) { 
+            if(x > y) return 1 + divide(x - y, y);
+            if(x === y) return 1;
+            return 0;
+        } else { 
+            if(x < y) return 1 + divide(x - y, y);
+            if(x === y) return 1;
+            return 0;
         }
     } else {
-        if(x > 0) { //x is positive, y is negative
-            
-        } else { //x is negative, y is positive
-            
+        if(x > 0) { 
+            if(x > -y) return -1 + divide(x - -y, y);
+            if(x === -y) return -1;
+            return 0;
+        } else { 
+            if(-x > y) return -1 + divide(x + y, y);
+            if(x === -y) return -1;
+            return 0;
         }
     }
-    //do long division based on length of divisor. do same length then length + 1 if not works
-    //convert to string, tack the next digit on, then 
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers.  The GCD of two
@@ -276,6 +282,7 @@ var rMap = function(array, callback) {
 // countKeysInObj(testobj, 'r') // 1
 // countKeysInObj(testobj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+    
 };
 
 // 22. Write a function that counts the number of times a value occurs in an object.
@@ -288,6 +295,7 @@ var countValuesInObj = function(obj, value) {
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, key, newKey) {
+
 };
 
 // 24. Get the first n Fibonacci numbers.  In the Fibonacci Sequence, each subsequent
