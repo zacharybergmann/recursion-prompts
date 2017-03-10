@@ -365,7 +365,6 @@ var letterTally = function(str, obj) {
     obj[str[index]] = str.split("").reduce(function(letterInsts, curLetter){
         return curLetter === str[index] ? letterInsts + 1 : letterInsts   }, 0);
 
-    console.log(obj);
     return letterTally(str, obj, ++index);
 };
 
@@ -375,6 +374,12 @@ var letterTally = function(str, obj) {
 // Example: compress([1, 2, 2, 3, 4, 4, 5, 5, 5]) // [1, 2, 3, 4, 5]
 // Example: compress([1, 2, 2, 3, 4, 4, 2, 5, 5, 5, 4, 4]) // [1, 2, 3, 4, 2, 5, 4]
 var compress = function(list) {
+    var index = Array.from(arguments)[1] || 0;
+    var result = Array.from(arguments)[2] || [];
+    if(index === list.length) return result;
+    if(result[result.length - 1] === list[index]) return compress(list, ++index, result); 
+    result.push(list[index]);
+    return compress(list, ++index, result);
 };
 
 // 32. Augument every element in a list with a new value where each element is an array
