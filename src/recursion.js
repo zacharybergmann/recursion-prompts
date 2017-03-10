@@ -475,7 +475,15 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
-
+    if(array === [target]) return min;
+    if(array.length === 1 && array[0] !== target) return null;
+    var findMiddle = Math.floor(array.length / 2);
+    var arr1stHalf = array.slice(0, findMiddle);
+    var arr2ndHalf = array.slice(findMiddle);
+    if(target < arr1stHalf[arr1stHalf.length - 1]) return binarySearch(arr1stHalf, target, 0, findMiddle - 1);
+    if(target === arr1stHalf[arr1stHalf.length - 1]) return findMiddle - 1;
+    if(target > arr2ndHalf[0]) return binarySearch(arr2ndHalf, target, findMiddle, array.length - 1);
+    if(target === arr2ndHalf[0]) return findMiddle;
 };
 
 // 38. Write a merge sort function.
