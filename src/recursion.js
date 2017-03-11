@@ -527,14 +527,24 @@ var numToText = function(str) {
 var tagCount = function(tag, node) {
     var node = Array.from(arguments)[1] || document.body;
     var total = Array.from(arguments)[2] || 0;
-    console.log(node);
+    console.log(total);
     console.log(node.tagName);
-    if(node.tagName.toLowerCase() === 'text') total = total;
-    for(var child in node.context.childNodes) {
-        console.log(node.context.childNodes);
-        console.log(child);
-        tagCount(tag, child, total);
+    if(!node.childNodes || node.childNodes.length === 0) {
+        if(node.tagName === tag.toUpperCase()) {
+            return 1;
+        } 
+        return 0;
+    } 
+    for(var i = 0 ; i < node.childNodes.length ; i++) {
+        total += tagCount(tag, node.childNodes[i], total);
     }
+    if(node.tagName === tag.toUpperCase()) {
+        if(node.tagName !== 'BODY') {
+            return total + 1;
+        } else {
+            total = total + 1;
+        }
+    } 
     return total;
 };    
     
@@ -561,5 +571,9 @@ var binarySearch = function(array, target, min, max) {
 // Sample array:  [34,7,23,32,5,62]
 // Sample output: [5,7,23,32,34,62]
 var mergeSort = function(array) {
+    //split the parent array into an array of single value arrays
+    //while each array element has a value in front of it, compare those two
+    //take the first array, iterate thru it for each value, iterate thru the other array, find where it belongs, and splice it in.
+    //once all values in first array spliced in, remove the first array from the parent array.
 
 };
