@@ -415,10 +415,8 @@ var nestedEvenSum = function(obj) {
                 newTempVals.push(objie[key]);
             });
         });
-        console.log('at return');
         return nestedEvenSum(obj, newTempVals);        
     }
-    console.log(tempVals);
     return tempVals.reduce(function(sumValOccurs, curVal){return curVal % 2 === 0 ? sumValOccurs + curVal : sumValOccurs;}, 0);
 };
 
@@ -528,18 +526,20 @@ var numToText = function(str) {
 // 36. Return the number of times a tag occurs in the DOM.
 var tagCount = function(tag, node) {
     var node = Array.from(arguments)[1] || document.body;
-    var tagCountTracker = Array.from(arguments)[2] || 0;
-    //need to catch text nodes so they do not cause errors
-    if(node.tagName.toLowerCase() === tag.toLowerCase()) {
-        ++tagCountTracker;
+    var total = Array.from(arguments)[2] || 0;
+    console.log(node);
+    console.log(node.tagName);
+    if(node.tagName.toLowerCase() === 'text') total = total;
+    for(var child in node.context.childNodes) {
+        console.log(node.context.childNodes);
+        console.log(child);
+        tagCount(tag, child, total);
     }
-    if(node.childNodes !== null) {
-        Array.from(node.childNodes).forEach(function(child){
-            tagCount(tag, child, tagCountTracker);
-        });
-    }
-    return tagCountTracker;
-};
+    return total;
+};    
+    
+    
+
 
 // 37. Write a function for binary search.
 // Sample array:  [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
