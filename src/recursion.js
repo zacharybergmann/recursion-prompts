@@ -328,28 +328,18 @@ var countValuesInObj = function(obj, value) {
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, key, newKey) {
-    console.log(obj);
-    var carryVals = Array.from(arguments)[3] || [obj];
-    var result = Array.from(arguments)[4] || obj;
-    if(carryVals.some(function(val){return typeof val === 'object'})){
-        var keyss = [];
-        var valss = [];
-        carryVals.forEach(function(objMb){
-            if((typeof objMb === 'object')) {
-                keyss = Object.keys(objMb);
-                keyss.forEach(function(kee){
-                    valss.push(objMb[kee]);
-                });
-                if(objMb.hasOwnProperty(key)) {
-                    result[newKey] = obj[key];
-                    delete result[key];
-                }
-            }
-        });
-        return replaceKeysInObj(obj, key, newKey, valss, result);
+    var result = Array.from(arguments)[3] || JSON.parse(JSON.stringify(obj));
+    var currPath = Array.from(arguments)[4] || result;
+    for(var kee in currPath) {
+        if(kee === key) {
+            currPath[newKey] = currPath[key];
+            delete currPath[key];        
+        }
+        if(typeof currPath[kee] === 'object') {
+            replaceKeysInObj(obj, key, newKey, result, currPath[kee]);
+        }
     }
-    console.log(result);
-    return result;    
+    return result;
 };
 
 // 24. Get the first n Fibonacci numbers.  In the Fibonacci Sequence, each subsequent
@@ -556,7 +546,6 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
-    debugger;
     var min = Array.from(arguments)[2] || 0;
     var max = Array.from(arguments)[3] || array.length - 1;
     if(array.length === 1 && array[0] !== target) return null;
