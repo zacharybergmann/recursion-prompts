@@ -527,8 +527,6 @@ var numToText = function(str) {
 var tagCount = function(tag, node) {
     var node = Array.from(arguments)[1] || document.body;
     var total = Array.from(arguments)[2] || 0;
-    console.log(total);
-    console.log(node.tagName);
     if(node.tagName === tag.toUpperCase()) {
         if(node.tagName !== 'BODY') {
             return total + 1;
