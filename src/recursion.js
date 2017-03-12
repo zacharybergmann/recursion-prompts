@@ -529,22 +529,19 @@ var tagCount = function(tag, node) {
     var total = Array.from(arguments)[2] || 0;
     console.log(total);
     console.log(node.tagName);
-    if(!node.childNodes || node.childNodes.length === 0) {
-        if(node.tagName === tag.toUpperCase()) {
-            return 1;
-        } 
-        return 0;
-    } 
-    for(var i = 0 ; i < node.childNodes.length ; i++) {
-        total += tagCount(tag, node.childNodes[i], total);
-    }
     if(node.tagName === tag.toUpperCase()) {
         if(node.tagName !== 'BODY') {
             return total + 1;
-        } else {
-            total = total + 1;
+        } else if (!node.childNodes) {
+            return total + 1;
         }
     } 
+    if(!node.childNodes || node.childNodes.length === 0) {
+        return 0;
+    } 
+    for(var i = 0 ; i < node.childNodes.length ; i++) {
+        total += tagCount(tag, node.childNodes[i], 0);
+    }
     return total;
 };    
     
