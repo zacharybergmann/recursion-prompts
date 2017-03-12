@@ -575,5 +575,46 @@ var mergeSort = function(array) {
     //while each array element has a value in front of it, compare those two
     //take the first array, iterate thru it for each value, iterate thru the other array, find where it belongs, and splice it in.
     //once all values in first array spliced in, remove the first array from the parent array.
-
+    var result = Array.from(arguments)[1] || array.map(function(val){return [val]});
+    if(result[1]) {
+        //for each even number index in the array, combine with the odd index that it goes with if exists
+        var new_res = [];
+        var i = 0;
+        while(i < result.length){
+            if(result[i] !== undefined && result[i+1] !== undefined) {
+                var oneStArr = result[i];
+                var twoNdArr = result[i + 1];
+                var oneSmallRes = [];
+                while(oneStArr.length > 0 && twoNdArr.length > 0) {
+                    if(twoNdArr[0] > oneStArr[0]) {
+                        oneSmallRes.push(oneStArr[0]);
+                        oneStArr = oneStArr.slice(1);
+                    } else {
+                        oneSmallRes.push(twoNdArr[0]);
+                        twoNdArr = twoNdArr.slice(1);
+                    }
+                }
+                //oneStArr.length > 0 ? oneStArr.each(function(vall){oneSmallRes.push(vall);}) : twoNdArr.each(function(valll){oneSmallRes.push(valll)});
+                if(oneStArr.length > 0) {
+                    var j = 0;
+                    while(j < oneStArr.length) {
+                        oneSmallRes.push(oneStArr[j]);
+                        j++;
+                    }
+                } else {
+                    var k = 0;
+                    while(k < twoNdArr.length) {
+                        oneSmallRes.push(twoNdArr[k]);
+                        k++;
+                    }
+                }
+                new_res.push(oneSmallRes);
+            } else {
+                new_res.push(result[i]);
+            }
+            i = i + 2;
+        }
+        return mergeSort(array, new_res);
+    }
+    return result[0];
 };
